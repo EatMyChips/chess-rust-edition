@@ -1,6 +1,46 @@
-use crate::pieces::Piece;
+use crate::game::pieces::Piece;
 
-pub fn create_pieces(mut board: [[Option<Piece>; 8]; 8]) -> [[Option<Piece>; 8]; 8] {
+pub struct Position {
+    pub x: usize,
+    pub y: usize,
+}
+
+pub struct GameData {
+    board: [[Option<Piece>; 8]; 8],
+    game_state: GameState,
+}
+impl GameData {
+    pub fn new() -> GameData {
+        let board = create_board();
+        let game_state = GameState::WhiteTurn;
+
+        Self { board, game_state }
+    }
+
+    pub fn get_piece_at(&self, position: Position) -> &Option<Piece> {
+        &self.board[position.x][position.y]
+    }
+
+    pub fn set_state(&mut self, state: GameState) {
+        self.game_state = state;
+    }
+
+    pub fn get_state(&self) -> &GameState {
+        &self.game_state
+    }
+}
+
+pub enum GameState {
+    WhiteTurn,
+    BlackTurn,
+    InvalidMove,
+    WhiteWin,
+    BlackWin,
+    Draw,
+}
+
+fn create_board() -> [[Option<Piece>; 8]; 8] {
+    let mut board = [[None; 8]; 8];
     // Create kings
     board[0][4] = Some(Piece::King { white: false });
     board[7][4] = Some(Piece::King { white: true });
@@ -31,5 +71,6 @@ pub fn create_pieces(mut board: [[Option<Piece>; 8]; 8]) -> [[Option<Piece>; 8];
         board[1][i] = Some(Piece::Pawn { white: false });
         board[6][i] = Some(Piece::Pawn { white: true });
     }
+
     board
 }
