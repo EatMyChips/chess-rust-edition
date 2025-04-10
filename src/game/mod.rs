@@ -9,11 +9,13 @@ pub fn player_turn(
     piece_position: Position,
     move_position: Position,
 ) -> GameData {
-    // Valid move check
-    if !Piece::valid_move(piece_position, move_position, &data) {
-        data.set_state(GameState::InvalidMove);
-        return data;
-    }
+    match data.get_piece_at(&piece_position) {
+        Some(piece) if piece.valid_move(move_position, &data) => {}
+        _ => {
+            data.set_state(GameState::InvalidMove);
+            return data;
+        }
+    };
 
     // TODO::If (opponent in check?)
     // Is game over?

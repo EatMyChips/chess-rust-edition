@@ -1,4 +1,6 @@
+use raylib::core::texture::Texture2D;
 use crate::game::pieces::Piece;
+use std::collections::HashMap;
 
 pub struct Position {
     pub x: usize,
@@ -8,16 +10,18 @@ pub struct Position {
 pub struct GameData {
     board: [[Option<Piece>; 8]; 8],
     game_state: GameState,
+    pub textures: HashMap<String, Texture2D>,
 }
 impl GameData {
     pub fn new() -> GameData {
         let board = create_board();
         let game_state = GameState::WhiteTurn;
+        let textures: HashMap<String, Texture2D> = HashMap::new();
 
-        Self { board, game_state }
+        Self { board, game_state, textures}
     }
 
-    pub fn get_piece_at(&self, position: Position) -> &Option<Piece> {
+    pub fn get_piece_at(&self, position: &Position) -> &Option<Piece> {
         &self.board[position.x][position.y]
     }
 

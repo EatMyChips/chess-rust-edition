@@ -27,16 +27,9 @@ impl Piece {
     }
 
     // Valid move check
-    pub fn valid_move(piece_position: Position, move_position: Position, data: &GameData) -> bool {
-        // Null check
-        let selected_piece: &Piece = match data.get_piece_at(piece_position) {
-            Some(piece) => piece,
-            None => return false,
-        };
-
-        let white = selected_piece.white();
-
+    pub fn valid_move(&self, move_position: Position, data: &GameData) -> bool {
         // Ensure they're moving the correct coloured piece
+        let white = self.white();
         match &data.get_state() {
             GameState::WhiteTurn => {
                 if !white {
@@ -53,7 +46,7 @@ impl Piece {
 
         //TODO
         // Checks if the move is valid for each piece type
-        match selected_piece {
+        match self {
             Piece::King { white: _ } => true,
             Piece::Queen { white: _ } => true,
             Piece::Bishop { white: _ } => true,
@@ -63,18 +56,50 @@ impl Piece {
         }
     }
 
-    pub fn get_image_path(game_data: &GameData, position: Position) -> String{
-        let selected_piece: &Piece = match game_data.get_piece_at(position) {
-            Some(piece) => piece,
-            None => return ""
-        };
-        match selected_piece{
-            Piece::King { white: white } => "",
-            Piece::Queen { white: white } => "",
-            Piece::Bishop { white: white } => "",
-            Piece::Knight { white: white } => "",
-            Piece::Rook { white: white } => "",
-            Piece::Pawn { white: white } => "",
+    pub fn get_image_path(&self) -> &str {
+        match self {
+            Piece::King { white: white } => {
+                if *white {
+                    "king_w.png"
+                } else {
+                    "king_b.png"
+                }
+            }
+            Piece::Queen { white: white } => {
+                if *white {
+                    "queen_w.png"
+                } else {
+                    "queen_b.png"
+                }
+            }
+            Piece::Bishop { white: white } => {
+                if *white {
+                    "bishop_w.png"
+                } else {
+                    "bishop_b.png"
+                }
+            }
+            Piece::Knight { white: white } => {
+                if *white {
+                    "knight_w.png"
+                } else {
+                    "knight_b.png"
+                }
+            }
+            Piece::Rook { white: white } => {
+                if *white {
+                    "rook_w.png"
+                } else {
+                    "rook_b.png"
+                }
+            }
+            Piece::Pawn { white: white } => {
+                if *white {
+                    "pawn_w.png"
+                } else {
+                    "pawn_b.png"
+                }
+            }
         }
     }
 }
