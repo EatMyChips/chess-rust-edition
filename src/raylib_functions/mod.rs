@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+use std::fs;
 use crate::game::{pieces::Piece, utils::GameData, utils::Position};
 use raylib::prelude::*;
 
@@ -50,4 +52,21 @@ fn draw_pieces<'a>(
     };
     d.draw_texture(game_data.textures.get(path).unwrap(), position.x as i32 * BLOCK_SIZE , position.y as i32 * BLOCK_SIZE, Color::WHITE);
     d
+}
+
+
+pub fn load_textures(mut rl: RaylibHandle, thread: &RaylibThread, game_data: &mut GameData) -> RaylibHandle{
+    let assets_path = "assets";
+    game_data.textures = HashMap::new();
+
+    for entry in fs::read_dir(assets_path).unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
+        if path.is_file() {
+            let file_name = path.file_name().unwrap().to_str().unwrap();
+            let tex = rl.load_texture(&thread, path.to_str().unwrap()).unwrap();
+            game_data.textures.insert(file_name.to_string(), tex);
+        }
+    }
+    rl
 }

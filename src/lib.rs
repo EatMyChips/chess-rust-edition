@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 use raylib::ffi::Texture2D;
+use crate::raylib_functions::load_textures;
 
 pub mod game;
 mod raylib_functions;
@@ -14,18 +15,7 @@ pub fn run_raylib() {
 
     // create game data
     let mut game_data = game::utils::GameData::new();
-
-    let assets_path = "assets";
-
-    for entry in fs::read_dir(assets_path).unwrap() {
-        let entry = entry.unwrap();
-        let path = entry.path();
-        if path.is_file() {
-            let file_name = path.file_name().unwrap().to_str().unwrap();
-            let tex = rl.load_texture(&thread, path.to_str().unwrap()).unwrap();
-            game_data.textures.insert(file_name.to_string(), tex);
-        }
-    }
+    rl = load_textures(rl, &thread, &mut game_data);
 
     // While window is open
     while !rl.window_should_close() {

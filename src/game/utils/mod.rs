@@ -16,7 +16,6 @@ impl GameData {
     pub fn new() -> GameData {
         let board = create_board();
         let game_state = GameState::WhiteTurn;
-        let textures: HashMap<String, Texture2D> = HashMap::new();
 
         Self { board, game_state, textures}
     }
