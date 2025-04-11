@@ -13,7 +13,7 @@ pub struct GameData {
     pub textures: HashMap<String, Texture2D>,
 }
 impl GameData {
-    pub fn new() -> GameData {
+    pub fn new(textures: HashMap<String, Texture2D>) -> GameData {
         let board = create_board();
         let game_state = GameState::WhiteTurn;
 

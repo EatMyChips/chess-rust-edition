@@ -57,7 +57,6 @@ fn draw_pieces<'a>(
 
 pub fn load_textures(mut rl: RaylibHandle, thread: &RaylibThread, game_data: &mut GameData) -> RaylibHandle{
     let assets_path = "assets";
-    game_data.textures = HashMap::new();
 
     for entry in fs::read_dir(assets_path).unwrap() {
         let entry = entry.unwrap();

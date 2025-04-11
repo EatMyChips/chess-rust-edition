@@ -14,7 +14,7 @@ pub fn run_raylib() {
         .build();
 
     // create game data
-    let mut game_data = game::utils::GameData::new();
+    let mut game_data = game::utils::GameData::new(HashMap::new());
     rl = load_textures(rl, &thread, &mut game_data);
 
     // While window is open
