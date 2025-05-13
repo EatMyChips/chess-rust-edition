@@ -1,36 +1,8 @@
-use raylib::core::texture::Texture2D;
 use crate::game::pieces::Piece;
-use std::collections::HashMap;
 
 pub struct Position {
     pub x: usize,
     pub y: usize,
-}
-
-pub struct GameData {
-    board: [[Option<Piece>; 8]; 8],
-    game_state: GameState,
-    pub textures: HashMap<String, Texture2D>,
-}
-impl GameData {
-    pub fn new(textures: HashMap<String, Texture2D>) -> GameData {
-        let board = create_board();
-        let game_state = GameState::WhiteTurn;
-
-        Self { board, game_state, textures}
-    }
-
-    pub fn get_piece_at(&self, position: &Position) -> &Option<Piece> {
-        &self.board[position.x][position.y]
-    }
-
-    pub fn set_state(&mut self, state: GameState) {
-        self.game_state = state;
-    }
-
-    pub fn get_state(&self) -> &GameState {
-        &self.game_state
-    }
 }
 
 pub enum GameState {
@@ -42,7 +14,7 @@ pub enum GameState {
     Draw,
 }
 
-fn create_board() -> [[Option<Piece>; 8]; 8] {
+pub(crate) fn create_board() -> [[Option<Piece>; 8]; 8] {
     let mut board = [[None; 8]; 8];
     // Create kings
     board[0][4] = Some(Piece::King { white: false });

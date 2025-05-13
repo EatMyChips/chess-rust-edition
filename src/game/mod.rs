@@ -1,28 +1,51 @@
 use pieces::Piece;
-use utils::{GameData, GameState, Position};
+use raylib::core::texture::Texture2D;
+use std::collections::HashMap;
+use utils::{Position, create_board, GameState};
 
 pub mod pieces;
-pub mod utils;
+pub(crate) mod utils;
 
-pub fn player_turn(
-    mut data: GameData,
-    piece_position: Position,
-    move_position: Position,
-) -> GameData {
-    match data.get_piece_at(&piece_position) {
-        Some(piece) if piece.valid_move(move_position, &data) => {}
-        _ => {
-            data.set_state(GameState::InvalidMove);
-            return data;
-        }
-    };
-
-    // TODO::If (opponent in check?)
-    // Is game over?
-
-    // TODO::Else
-    // Return data (make sure game_condition is either WhiteTurn or BlackTurn)
-    data
+pub struct GameData {
+    board: [[Option<Piece>; 8]; 8],
+    game_state: GameState,
+    pub textures: HashMap<String, Texture2D>,
 }
 
-//fn make_move(mut data: GameData, piece_position: Position, move_position: Position) {}
+impl GameData {
+    pub fn new() -> GameData {
+        let board = create_board();
+        let game_state = GameState::WhiteTurn;
+        let textures = HashMap::new();
+
+        Self { board, game_state, textures}
+    }
+
+    pub fn player_turn(
+        &mut self,
+        piece_position: Position,
+        move_position: Position,
+    ) {
+        match self.board[piece_position.x][piece_position.y] {
+            Some(piece) if piece.valid_move(move_position, &self) => {}
+            _ => {
+                self.game_state = GameState::InvalidMove;
+                return
+            }
+        };
+
+        // TODO::If (opponent in check?)
+        // Is game over?
+
+        // TODO::Else
+        // Return data (make sure game_condition is either WhiteTurn or BlackTurn)
+    }
+
+    pub fn get_piece_at(&self, position: &Position) -> &Option<Piece> {
+        &self.board[position.x][position.y]
+    }
+
+    pub fn get_state(&self) -> &GameState {
+        &self.game_state
+    }
+}

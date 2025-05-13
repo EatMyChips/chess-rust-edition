@@ -1,4 +1,5 @@
-use crate::game::utils::{GameData, GameState, Position};
+use crate::game::GameData;
+use crate::game::utils::{GameState, Position};
 
 // Crete the various types of pieces
 #[derive(Debug, Copy, Clone)]
@@ -14,18 +15,6 @@ pub enum Piece {
 
 // Universal piece functionality
 impl Piece {
-    // Get bool data from each piece
-    fn white(&self) -> bool {
-        match self {
-            Piece::King { white }
-            | Piece::Queen { white }
-            | Piece::Bishop { white }
-            | Piece::Knight { white }
-            | Piece::Rook { white }
-            | Piece::Pawn { white } => *white,
-        }
-    }
-
     // Valid move check
     pub fn valid_move(&self, move_position: Position, data: &GameData) -> bool {
         // Ensure they're moving the correct coloured piece
@@ -56,6 +45,20 @@ impl Piece {
         }
     }
 
+    // Get bool data from each piece
+    fn white(&self) -> bool {
+        match self {
+            Piece::King { white }
+            | Piece::Queen { white }
+            | Piece::Bishop { white }
+            | Piece::Knight { white }
+            | Piece::Rook { white }
+            | Piece::Pawn { white } => *white,
+        }
+    }
+
+
+    // TODO: segment this into the raylib functions
     pub fn get_image_path(&self) -> &str {
         match self {
             Piece::King { white: white } => {
